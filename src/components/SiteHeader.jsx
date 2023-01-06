@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { counterAction } from '../store/actions/counter.action';
 
 function SiteHeader({ counter, increase, empty }) {
 
@@ -25,10 +26,10 @@ const mapDispatchToProps = (dispatch) => {
 
     return {
         increase : () => {
-            dispatch({type:'INCREASE'})
+            dispatch(counterAction.increase())
         },
         empty: () => {
-            dispatch({type:'EMPTY'})
+            dispatch(counterAction.empty())
         }
     }
 
