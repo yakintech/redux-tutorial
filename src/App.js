@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
+import SiteFooter from './components/SiteFooter'
+import SiteHeader from './components/SiteHeader'
 
 function App() {
 
-  const [first, setFirst] = useState(0)
 
-  return (
-    <div>App</div>
+  return (<>
+    <SiteHeader />
+    <SiteFooter />
+  </>
   )
 }
 
