@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/redux@latest/dist/redux.min.js"></script>
+
+</head>
+
+<body>
+    <div>
+        Length: <h1 id="toDoLength"></h1>
+    </div>
+    <div>
+        <label>Name:</label>
+        <input type="text" id="toDoName" />
+    </div>
+    <div>
+        <button id="addBtn">Add</button>
+    </div>
+    <ul id="todos">
+
+    </ul>
+</body>
+<script>
+
+    let addBtn = document.getElementById('addBtn');
+    let todosUl = document.getElementById('todos');
+    let todoNameInput = document.getElementById('toDoName');
+    let h1Title = document.getElementById('toDoLength');
+
+    // let action = {
+    //     type: 'ADD',
+    //     payload: {
+    //         id: 1,
+    //         name: 'Login page design'
+    //     }
+    // }
+
+    function todoReducer(state, action) {
+
+        if (typeof state === 'undefined') {
+            return [];
+        }
+
+        switch (action.type) {
+            case 'ADD':
+                return [...state, action.payload]
+            case 'REMOVE':
+                return state.filter(q => q.id != action.payload.id)
+            case 'EMPTY':
+                return []
+            default:
+                return state;
+        }
+
+    }
+
+    var store = Redux.createStore(todoReducer);
+
+
+    function render(){
+        todosUl.innerHTML = "";
+        
+        let todos = store.getState();
+
+        h1Title.innerHTML = todos.length;
+
+        todos.forEach(element => {
+            let liElement = document.createElement('li');
+            liElement.innerHTML = element.name;
+
+            todosUl.appendChild(liElement);
+        });
+    }
+
+    render();
+    store.subscribe(render)
+
+
+    addBtn.addEventListener('click', function(){
+        let todos = store.getState();
+        let newId = todos[todos.length - 1] + 1;
+
+        let newTodo = {
+            id: newId,
+            name: todoNameInput.value,
+        }
+
+        store.dispatch({
+            type: 'ADD',
+            payload: newTodo
+        })
+
+    })
+
+
+</script>
+
+</html>
