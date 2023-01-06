@@ -20,6 +20,7 @@
     </div>
     <div>
         <button id="addBtn">Add</button>
+        <button id="emptyBtn">Empty</button>
     </div>
     <ul id="todos">
 
@@ -31,7 +32,7 @@
     let todosUl = document.getElementById('todos');
     let todoNameInput = document.getElementById('toDoName');
     let h1Title = document.getElementById('toDoLength');
-
+    let emptyBtn = document.getElementById('emptyBtn');
     // let action = {
     //     type: 'ADD',
     //     payload: {
@@ -41,6 +42,7 @@
     // }
 
     function todoReducer(state, action) {
+
 
         if (typeof state === 'undefined') {
             return [];
@@ -62,9 +64,9 @@
     var store = Redux.createStore(todoReducer);
 
 
-    function render(){
+    function render() {
         todosUl.innerHTML = "";
-        
+
         let todos = store.getState();
 
         h1Title.innerHTML = todos.length;
@@ -72,6 +74,14 @@
         todos.forEach(element => {
             let liElement = document.createElement('li');
             liElement.innerHTML = element.name;
+            liElement.id = element.id;
+            liElement.style.cursor = 'pointer';
+            liElement.addEventListener("click", function (e) {
+                store.dispatch({
+                    type: 'REMOVE',
+                    payload: element
+                })
+            })
 
             todosUl.appendChild(liElement);
         });
@@ -81,9 +91,12 @@
     store.subscribe(render)
 
 
-    addBtn.addEventListener('click', function(){
+    addBtn.addEventListener('click', function () {
         let todos = store.getState();
-        let newId = todos[todos.length - 1] + 1;
+
+        let newId = 1;
+        if (todos.length != 0)
+            newId = todos[todos.length - 1].id + 1;
 
         let newTodo = {
             id: newId,
@@ -96,6 +109,14 @@
         })
 
     })
+
+    emptyBtn.addEventListener('click', function () {
+
+        store.dispatch({
+            type: 'EMPTY'
+        })
+    })
+
 
 
 </script>
