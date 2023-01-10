@@ -1,19 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 import { createStore } from 'redux';
 import App from './App';
-import { counterReducer } from './store/reducers/counter.reducer';
+import reducer from './store/reducers'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-const counterStore = createStore(counterReducer);
+const counterStore = createStore(reducer);
+
+//combine reducer??
 
 root.render(
   <React.StrictMode>
-    <Provider store={counterStore}>
-      <App />
-    </Provider>
+    <BrowserRouter>
+      <Provider store={counterStore}>
+        <App />
+      </Provider>
+    </BrowserRouter>
   </React.StrictMode>
 );
 
